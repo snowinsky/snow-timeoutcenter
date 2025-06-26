@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6658d1a2-4a10-40dd-973c-7683ba0d12e8" name="Changes" comment="fix the code review issues" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Interface" />
+        <option value="JUnit3 Test Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Pull.Settings">
+    <option name="OPTIONS">
+      <set>
+        <option value="REBASE" />
+      </set>
+    </option>
+  </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="main" />
+  </component>
+  <component name="Git.Settings">
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--follow-tags" />
+        <option name="title" value="Current Branch" />
+      </GitPushTagMode>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "snowinsky"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/snowinsky/snow-timeoutcenter.git",
+    "accountId": "7a438b5f-af5f-42e6-9353-4be3a6f5c3a3"
+  }
+}]]></component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="customMavenHome" value="/Library/Java/maven/apache-maven-3.8.8-bin" />
+        <option name="localRepository" value="$USER_HOME$/dev_env/m2/repo" />
+        <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
+        <option name="userSettingsFile" value="$USER_HOME$/.m2/settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="jdkForImporter" value="11" />
+        <option name="workspaceImportForciblyTurnedOn" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="jreName" value="11" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2yywBirSfXfxPqRiOpRv49UtDT2" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.JedisClient.executor": "Run",
+    "Application.LinkedListQueueImpl.executor": "Run",
+    "Application.LinkedListTimeoutCenter (1).executor": "Run",
+    "Application.LinkedListTimeoutCenter (2).executor": "Run",
+    "Application.LinkedListTimeoutCenter (3).executor": "Run",
+    "Application.LinkedListTimeoutCenter.executor": "Run",
+    "Application.RedisJedisTimeoutCenter.executor": "Run",
+    "Application.TimeLongUtil.executor": "Run",
+    "JUnit.LinkedListTimeoutCenterTest.testInitDeadLetterQueue.executor": "Debug",
+    "JUnit.RedisJedisTimeoutCenterTest.testInitDeadLetterQueue.executor": "Debug",
+    "JUnit.TimeoutTaskTest.executor": "Run",
+    "JUnit.TimeoutTaskTest.testCalScore.executor": "Run",
+    "JUnit.TimeoutTaskTest.testCalValue.executor": "Run",
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit3",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3": "junit.framework.TestCase",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "http.proxy"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="junit.framework.TestCase" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.snow.al.timeoutcenter.linkedlist" />
+      <recent name="com.snow.al.timeoutcenter.redis.jedis" />
+      <recent name="com.snow.al.timeoutcenter" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.snow.al.timeoutcenter.redis.jedis" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.RedisJedisTimeoutCenter">
+    <configuration name="LinkedListTimeoutCenter (3)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.snow.al.timeoutcenter.linkedlist.LinkedListTimeoutCenter" />
+      <module name="snow-timeoutcenter" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.snow.al.timeoutcenter.linkedlist.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LinkedListTimeoutCenter" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.snow.al.timeoutcenter.linkedlist.LinkedListTimeoutCenter" />
+      <module name="snow-timeoutcenter" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.snow.al.timeoutcenter.linkedlist.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RedisJedisTimeoutCenter" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.snow.al.timeoutcenter.redis.jedis.RedisJedisTimeoutCenter" />
+      <module name="snow-timeoutcenter" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.snow.al.timeoutcenter.redis.jedis.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LinkedListTimeoutCenterTest.testInitDeadLetterQueue" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="snow-timeoutcenter" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.snow.al.timeoutcenter.linkedlist.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.snow.al.timeoutcenter.linkedlist" />
+      <option name="MAIN_CLASS_NAME" value="com.snow.al.timeoutcenter.linkedlist.LinkedListTimeoutCenterTest" />
+      <option name="METHOD_NAME" value="testInitDeadLetterQueue" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RedisJedisTimeoutCenterTest.testInitDeadLetterQueue" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="snow-timeoutcenter" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.snow.al.timeoutcenter.redis.jedis.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.snow.al.timeoutcenter.redis.jedis" />
+      <option name="MAIN_CLASS_NAME" value="com.snow.al.timeoutcenter.redis.jedis.RedisJedisTimeoutCenterTest" />
+      <option name="METHOD_NAME" value="testInitDeadLetterQueue" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.RedisJedisTimeoutCenter" />
+        <item itemvalue="JUnit.RedisJedisTimeoutCenterTest.testInitDeadLetterQueue" />
+        <item itemvalue="JUnit.LinkedListTimeoutCenterTest.testInitDeadLetterQueue" />
+        <item itemvalue="Application.LinkedListTimeoutCenter" />
+        <item itemvalue="Application.LinkedListTimeoutCenter (3)" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6658d1a2-4a10-40dd-973c-7683ba0d12e8" name="Changes" comment="" />
+      <created>1750819991090</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750819991090</updated>
+    </task>
+    <task id="LOCAL-00001" summary="init the timeout center">
+      <option name="closed" value="true" />
+      <created>1750905451947</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1750905451947</updated>
+    </task>
+    <task id="LOCAL-00002" summary="fix the code review issues">
+      <option name="closed" value="true" />
+      <created>1750906672932</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1750906672932</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init the timeout center" />
+    <MESSAGE value="fix the code review issues" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix the code review issues" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/snow/al/timeoutcenter/linkedlist/LinkedListTimeoutCenterTest.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/snow/al/timeoutcenter/redis/jedis/RedisJedisTimeoutCenterTest.java</url>
+          <line>27</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/snow/al/timeoutcenter/AbstractTimeoutCenterFacade.java</url>
+          <line>29</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
