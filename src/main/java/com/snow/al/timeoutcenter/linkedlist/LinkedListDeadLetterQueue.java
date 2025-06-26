@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 public class LinkedListDeadLetterQueue extends DeadLetterQueue {
 
-    private final LinkedList<TimeoutTask> ll = new LinkedList();
+    private final LinkedList<TimeoutTask> ll = new LinkedList<>();
 
     public LinkedListDeadLetterQueue(DeadLetterHandleFactory deadLetterHandleFactory) {
         super(deadLetterHandleFactory);

@@ -5,8 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.JedisPool;
 
-import java.util.concurrent.TimeoutException;
-
 @Slf4j
 @RequiredArgsConstructor
 public class RedisJedisTimeoutCenter extends AbstractTimeoutCenterFacade {
@@ -31,22 +29,14 @@ public class RedisJedisTimeoutCenter extends AbstractTimeoutCenterFacade {
 
     @Override
     protected DeadLetterHandleFactory initSingletonDeadLetterHandleFactory() {
-        return new DeadLetterHandleFactory() {
-            @Override
-            public void handleTimeoutTask(TimeoutTask timeoutTask) {
-                log.info("jedis process the task:{}", timeoutTask);
-            }
-        };
+        return timeoutTask -> log.info("jedis process the task:{}", timeoutTask);
     }
 
     @Override
     protected HandleFactory initSingletonHandleFactory() {
-        return new HandleFactory() {
-            @Override
-            public boolean performTask(TimeoutTask timeoutTask) throws TimeoutException {
-                log.info("jedis receive the task:{}", timeoutTask);
-                return true;
-            }
+        return timeoutTask -> {
+            log.info("jedis receive the task:{}", timeoutTask);
+            return true;
         };
     }
 

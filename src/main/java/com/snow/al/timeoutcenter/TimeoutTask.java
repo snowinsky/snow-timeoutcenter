@@ -46,8 +46,7 @@ public class TimeoutTask {
         }
 
         try {
-            double d = score;
-            long l = (long) d;
+            long l = (long) score;
             String lstring = String.valueOf(l);
             String retryString = lstring.substring(lstring.length() - 3);
             String timeoutString = lstring.substring(0, lstring.length() - 3);

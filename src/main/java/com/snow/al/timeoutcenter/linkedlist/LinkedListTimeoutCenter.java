@@ -26,34 +26,26 @@ public class LinkedListTimeoutCenter extends AbstractTimeoutCenterFacade {
 
     @Override
     protected DeadLetterHandleFactory initSingletonDeadLetterHandleFactory() {
-        return new DeadLetterHandleFactory() {
-            @Override
-            public void handleTimeoutTask(TimeoutTask timeoutTask) {
-                log.info("receive a dead letter message:{}", timeoutTask);
-            }
-        };
+        return timeoutTask -> log.info("receive a dead letter message:{}", timeoutTask);
     }
 
     @Override
     protected HandleFactory initSingletonHandleFactory() {
-        return new HandleFactory() {
-            @Override
-            public boolean performTask(TimeoutTask timeoutTask) throws TimeoutException {
-                int a = ThreadLocalRandom.current().nextInt(1, 4);
-                switch (a) {
-                    case 1:
-                        log.info("process the task true:{}", timeoutTask);
-                        return true;
-                    case 2:
-                        log.info("process the task false:{}", timeoutTask);
-                        return false;
-                    case 3:
-                        log.info("process the task timeout:{}", timeoutTask);
-                        throw new TimeoutException("handle task timeout");
-                }
-                log.error("sssssssssssssssss");
-                return false;
+        return timeoutTask -> {
+            int a = ThreadLocalRandom.current().nextInt(1, 4);
+            switch (a) {
+                case 1:
+                    log.info("process the task true:{}", timeoutTask);
+                    return true;
+                case 2:
+                    log.info("process the task false:{}", timeoutTask);
+                    return false;
+                case 3:
+                    log.info("process the task timeout:{}", timeoutTask);
+                    throw new TimeoutException("handle task timeout");
             }
+            log.error("sssssssssssssssss");
+            return false;
         };
     }
 }

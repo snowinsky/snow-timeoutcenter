@@ -9,7 +9,7 @@ import java.util.List;
 
 public class JedisClient {
 
-    private static JedisPool pool;
+    private static final JedisPool pool;
 
     static {
         JedisPoolConfig jpc = new JedisPoolConfig();
