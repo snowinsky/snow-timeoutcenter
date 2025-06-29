@@ -14,13 +14,10 @@ public abstract class DeadLetterQueue implements TimeoutQueue {
     private volatile boolean isStart;
 
     @Override
-    public abstract boolean add(TimeoutTask timeoutTask);
+    public String getQueueType() {
+        return QUEUE_TYPE;
+    }
 
-    @Override
-    public abstract TimeoutTask peek();
-
-    @Override
-    public abstract TimeoutTask poll();
 
     @Override
     public void start() {

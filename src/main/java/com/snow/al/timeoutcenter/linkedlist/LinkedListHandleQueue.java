@@ -6,10 +6,17 @@ import java.util.LinkedList;
 
 public class LinkedListHandleQueue extends HandleQueue {
 
+    private final String bizTag;
     private final LinkedList<TimeoutTask> lh = new LinkedList<>();
 
-    public LinkedListHandleQueue(HandleFactory handleFactory, DeadLetterQueue deadLetterQueue) {
+    public LinkedListHandleQueue(HandleFactory handleFactory, DeadLetterQueue deadLetterQueue, String bizTag) {
         super(handleFactory, deadLetterQueue);
+        this.bizTag = bizTag;
+    }
+
+    @Override
+    public String getBizTag() {
+        return bizTag;
     }
 
     @Override

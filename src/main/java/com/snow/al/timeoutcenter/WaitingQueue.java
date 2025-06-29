@@ -1,23 +1,21 @@
 package com.snow.al.timeoutcenter;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
+@Slf4j
 public abstract class WaitingQueue implements TimeoutQueue {
 
     public static final String QUEUE_TYPE = "Waiting";
 
-    private final HandleQueue handleQueue;
+    protected final HandleQueue handleQueue;
     private volatile boolean isStart;
 
     @Override
-    public abstract boolean add(TimeoutTask timeoutTask);
-
-    @Override
-    public abstract TimeoutTask peek();
-
-    @Override
-    public abstract TimeoutTask poll();
+    public String getQueueType() {
+        return QUEUE_TYPE;
+    }
 
     @Override
     public void start() {
@@ -31,9 +29,13 @@ public abstract class WaitingQueue implements TimeoutQueue {
                 continue;
             }
             if (TimeLongUtil.currentTimeMillis() >= timeoutTask.getTaskTimeout()) {
-                handleQueue.add(poll());
+                moveTaskFromWaitingQueueToHandleQueue(timeoutTask);
             }
         }
+    }
+
+    protected boolean moveTaskFromWaitingQueueToHandleQueue(TimeoutTask timeoutTask) {
+        return handleQueue.add(poll());
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.snow.al.timeoutcenter.redis.jedis;
 
 import com.snow.al.timeoutcenter.SnowTimeoutCenter;
 import com.snow.al.timeoutcenter.TimeoutTask;
+import com.snow.al.timeoutcenter.redis.jedis.sync.JedisClient;
+import com.snow.al.timeoutcenter.redis.jedis.sync.RedisJedisTimeoutCenter;
 import junit.framework.TestCase;
 import redis.clients.jedis.JedisPool;
 
@@ -13,8 +15,9 @@ public class RedisJedisTimeoutCenterTest extends TestCase {
 
         JedisPool pool = JedisClient.getJedisPool();
         int slotNumber = 1;
+        String bizTag = "AABSCCC";
 
-        SnowTimeoutCenter snowTimeoutCenter = new RedisJedisTimeoutCenter(pool, slotNumber);
+        SnowTimeoutCenter snowTimeoutCenter = new RedisJedisTimeoutCenter(pool, bizTag, slotNumber);
         snowTimeoutCenter.start();
 
         var threadPool = Executors.newFixedThreadPool(4);

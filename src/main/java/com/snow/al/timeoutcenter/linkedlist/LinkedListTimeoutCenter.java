@@ -9,19 +9,24 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class LinkedListTimeoutCenter extends AbstractTimeoutCenterFacade {
 
+    private final String bizTag;
+    public LinkedListTimeoutCenter(String bizTag) {
+        this.bizTag = bizTag;
+    }
+
     @Override
     protected DeadLetterQueue initDeadLetterQueue(DeadLetterHandleFactory deadLetterHandleFactory) {
-        return new LinkedListDeadLetterQueue(deadLetterHandleFactory);
+        return new LinkedListDeadLetterQueue(deadLetterHandleFactory, bizTag);
     }
 
     @Override
     protected HandleQueue initHandleQueue(HandleFactory handleFactory, DeadLetterQueue deadLetterQueue) {
-        return new LinkedListHandleQueue(handleFactory, deadLetterQueue);
+        return new LinkedListHandleQueue(handleFactory, deadLetterQueue, bizTag);
     }
 
     @Override
     protected WaitingQueue initWaitingQueue(HandleQueue handleQueue) {
-        return new LinkedListWaitingQueue(handleQueue);
+        return new LinkedListWaitingQueue(handleQueue, bizTag);
     }
 
     @Override

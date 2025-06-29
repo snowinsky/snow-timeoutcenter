@@ -12,19 +12,15 @@ public abstract class HandleQueue implements TimeoutQueue {
     public static final String QUEUE_TYPE = "Handle";
 
     @Setter
-    private WaitingQueue waitingQueue;
-    private final HandleFactory handleFactory;
-    private final DeadLetterQueue deadLetterQueue;
-    private volatile boolean isStart;
+    protected WaitingQueue waitingQueue;
+    protected final HandleFactory handleFactory;
+    protected final DeadLetterQueue deadLetterQueue;
+    protected volatile boolean isStart;
 
     @Override
-    public abstract boolean add(TimeoutTask timeoutTask);
-
-    @Override
-    public abstract TimeoutTask peek();
-
-    @Override
-    public abstract TimeoutTask poll();
+    public String getQueueType() {
+        return QUEUE_TYPE;
+    }
 
     @Override
     public void start() {
@@ -45,7 +41,7 @@ public abstract class HandleQueue implements TimeoutQueue {
                         deadLetterQueue.add(timeoutTask);
                         continue;
                     }
-                    Optional.ofNullable(waitingQueue).ifPresent(a->a.add(timeoutTask));
+                    Optional.ofNullable(waitingQueue).ifPresent(a -> a.add(timeoutTask));
                 }
             } catch (TimeoutException e) {
                 timeoutTask.increaseRetryNumber();
@@ -53,7 +49,7 @@ public abstract class HandleQueue implements TimeoutQueue {
                     deadLetterQueue.add(timeoutTask);
                     continue;
                 }
-                Optional.ofNullable(waitingQueue).ifPresent(a->a.add(timeoutTask));
+                Optional.ofNullable(waitingQueue).ifPresent(a -> a.add(timeoutTask));
             }
         }
     }

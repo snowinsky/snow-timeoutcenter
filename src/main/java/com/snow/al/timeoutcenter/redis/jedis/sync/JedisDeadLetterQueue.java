@@ -1,8 +1,7 @@
-package com.snow.al.timeoutcenter.redis.jedis;
+package com.snow.al.timeoutcenter.redis.jedis.sync;
 
+import com.snow.al.timeoutcenter.DeadLetterHandleFactory;
 import com.snow.al.timeoutcenter.DeadLetterQueue;
-import com.snow.al.timeoutcenter.HandleFactory;
-import com.snow.al.timeoutcenter.HandleQueue;
 import com.snow.al.timeoutcenter.TimeoutTask;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -13,22 +12,28 @@ import java.util.Optional;
 
 import static com.snow.al.timeoutcenter.TimeoutTask.calKey;
 
-public class JedisHandleQueue extends HandleQueue {
+public class JedisDeadLetterQueue extends DeadLetterQueue {
 
     private final JedisPool pool;
+    private final String bizTag;
     private final int slotNumber;
 
-
-    public JedisHandleQueue(HandleFactory handleFactory, DeadLetterQueue deadLetterQueue, JedisPool pool, int slotNumber) {
-        super(handleFactory, deadLetterQueue);
+    public JedisDeadLetterQueue(DeadLetterHandleFactory deadLetterHandleFactory, JedisPool pool, String bizTag, int slotNumber) {
+        super(deadLetterHandleFactory);
         this.pool = pool;
+        this.bizTag = bizTag;
         this.slotNumber = slotNumber;
+    }
+
+    @Override
+    public String getBizTag() {
+        return bizTag;
     }
 
     @Override
     public boolean add(TimeoutTask timeoutTask) {
         try (Jedis jedis = pool.getResource()) {
-            long ret = jedis.zadd(TimeoutTask.calKey(QUEUE_TYPE, slotNumber), timeoutTask.calScore(), timeoutTask.calValue());
+            long ret = jedis.zadd(TimeoutTask.calKey(QUEUE_TYPE, bizTag, slotNumber), timeoutTask.calScore(), timeoutTask.calValue());
             return ret > 0;
         }
     }
@@ -36,7 +41,7 @@ public class JedisHandleQueue extends HandleQueue {
     @Override
     public TimeoutTask peek() {
         try (Jedis jedis = pool.getResource()) {
-            List<Tuple> t = jedis.zrangeWithScores(calKey(QUEUE_TYPE, slotNumber), 0, 0);
+            List<Tuple> t = jedis.zrangeWithScores(calKey(QUEUE_TYPE, bizTag, slotNumber), 0, 0);
             if (t == null || t.isEmpty()) {
                 return null;
             }
@@ -47,7 +52,7 @@ public class JedisHandleQueue extends HandleQueue {
     @Override
     public TimeoutTask poll() {
         try (Jedis jedis = pool.getResource()) {
-            Tuple t = jedis.zpopmin(calKey(QUEUE_TYPE, slotNumber));
+            Tuple t = jedis.zpopmin(calKey(QUEUE_TYPE, bizTag, slotNumber));
             return Optional.ofNullable(t).map(TimeoutTask::new).orElse(null);
         }
     }

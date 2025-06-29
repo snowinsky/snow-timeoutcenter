@@ -1,4 +1,4 @@
-package com.snow.al.timeoutcenter.redis.jedis;
+package com.snow.al.timeoutcenter.redis.jedis.sync;
 
 import com.snow.al.timeoutcenter.*;
 import lombok.RequiredArgsConstructor;
@@ -10,21 +10,22 @@ import redis.clients.jedis.JedisPool;
 public class RedisJedisTimeoutCenter extends AbstractTimeoutCenterFacade {
 
     private final JedisPool pool;
+    private final String bizTag;
     private final int slotNumber;
 
     @Override
     protected DeadLetterQueue initDeadLetterQueue(DeadLetterHandleFactory deadLetterHandleFactory) {
-        return new JedisDeadLetterQueue(deadLetterHandleFactory, pool, slotNumber) ;
+        return new JedisDeadLetterQueue(deadLetterHandleFactory, pool, bizTag, slotNumber) ;
     }
 
     @Override
     protected HandleQueue initHandleQueue(HandleFactory handleFactory, DeadLetterQueue deadLetterQueue) {
-        return new JedisHandleQueue(handleFactory, deadLetterQueue, pool, slotNumber);
+        return new JedisHandleQueue(handleFactory, deadLetterQueue, pool, bizTag, slotNumber);
     }
 
     @Override
     protected WaitingQueue initWaitingQueue(HandleQueue handleQueue) {
-        return new JedisWaitingQueue(handleQueue, pool, slotNumber);
+        return new JedisWaitingQueue(handleQueue, pool, bizTag, slotNumber);
     }
 
     @Override

@@ -8,10 +8,17 @@ import java.util.LinkedList;
 
 public class LinkedListDeadLetterQueue extends DeadLetterQueue {
 
+    private final String bizTag;
     private final LinkedList<TimeoutTask> ll = new LinkedList<>();
 
-    public LinkedListDeadLetterQueue(DeadLetterHandleFactory deadLetterHandleFactory) {
+    public LinkedListDeadLetterQueue(DeadLetterHandleFactory deadLetterHandleFactory, String bizTag) {
         super(deadLetterHandleFactory);
+        this.bizTag = bizTag;
+    }
+
+    @Override
+    public String getBizTag() {
+        return bizTag;
     }
 
     @Override

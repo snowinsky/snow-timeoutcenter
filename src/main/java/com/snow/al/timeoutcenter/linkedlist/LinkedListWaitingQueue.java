@@ -8,10 +8,17 @@ import java.util.LinkedList;
 
 public class LinkedListWaitingQueue extends WaitingQueue {
 
+    private final String bizTag;
     private final LinkedList<TimeoutTask> lw = new LinkedList<>();
 
-    public LinkedListWaitingQueue(HandleQueue handleQueue) {
+    public LinkedListWaitingQueue(HandleQueue handleQueue, String bizTag) {
         super(handleQueue);
+        this.bizTag = bizTag;
+    }
+
+    @Override
+    public String getBizTag() {
+        return bizTag;
     }
 
     @Override

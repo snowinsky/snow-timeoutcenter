@@ -7,7 +7,7 @@ public class LinkedListTimeoutCenterTest extends TestCase {
 
     public void testInitDeadLetterQueue() {
 
-        LinkedListTimeoutCenter ltc = new LinkedListTimeoutCenter();
+        LinkedListTimeoutCenter ltc = new LinkedListTimeoutCenter("bizTag_only_for_test");
         ltc.start();
 
         for (int i = 0; i < 50; i++) {
