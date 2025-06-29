@@ -35,17 +35,20 @@ public class JedisClient {
             "end\n" +
             "return add_cnt";
 
+    private static final String MOVE_MEMBER_FROM_ZSET_TO_ZSET_LUA_ = "redis.pcall('ZREM', KEYS[1], KEYS[4])\n" +
+            "return redis.pcall('zadd', KEYS[2], KEYS[3], KEYS[4])\n";
+
     public static String getMoveMemberFromZSetToZSetLuaSha(JedisPool pool) {
         try (Jedis jedis = pool.getResource()) {
             if (moveMemberFromZSetToZSetLuaSha.isEmpty()) {
-                moveMemberFromZSetToZSetLuaSha = jedis.scriptLoad(MOVE_MEMBER_FROM_ZSET_TO_ZSET_LUA);
+                moveMemberFromZSetToZSetLuaSha = jedis.scriptLoad(MOVE_MEMBER_FROM_ZSET_TO_ZSET_LUA_);
                 return moveMemberFromZSetToZSetLuaSha;
             }
             boolean has = jedis.scriptExists(moveMemberFromZSetToZSetLuaSha);
             if (has) {
                 return moveMemberFromZSetToZSetLuaSha;
             } else {
-                moveMemberFromZSetToZSetLuaSha = jedis.scriptLoad(MOVE_MEMBER_FROM_ZSET_TO_ZSET_LUA);
+                moveMemberFromZSetToZSetLuaSha = jedis.scriptLoad(MOVE_MEMBER_FROM_ZSET_TO_ZSET_LUA_);
                 return moveMemberFromZSetToZSetLuaSha;
             }
         }
@@ -56,30 +59,14 @@ public class JedisClient {
             String sha = getMoveMemberFromZSetToZSetLuaSha(pool);
             Object ret = jedis.evalsha(sha, 4, fromKey, toKey, score, member);
             if (ret instanceof Long) {
-                return (Long) ret > 0;
+                return true;
             }
             throw new IllegalStateException("move member from zset to another one failed");
         }
     }
 
     public static boolean moveMemberFromZSetToZSet(JedisPool pool, String fromKey, String toKey, double score, String member) {
-        try(Jedis jedis = pool.getResource()){
-            long zremRet = jedis.zrem(fromKey, member);
-            log.info("zrem key={} member={} then return={}", fromKey, member, zremRet);
-            jedis.zadd(toKey, score, member);
-            return true;
-        }
-        //return moveMemberFromZSetToZSet(pool, fromKey, toKey, String.valueOf(score), member);
-    }
-
-    public static void main(String[] args) {
-        try (Jedis jedis = pool.getResource()) {
-            jedis.zadd("test1", 10, "a");
-            jedis.zadd("test1", 11, "b");
-            jedis.zrem("test1", "a");
-            jedis.zadd("test2", 10, "a");
-
-        }
+        return moveMemberFromZSetToZSet(pool, fromKey, toKey, String.valueOf(score), member);
     }
 
 }
