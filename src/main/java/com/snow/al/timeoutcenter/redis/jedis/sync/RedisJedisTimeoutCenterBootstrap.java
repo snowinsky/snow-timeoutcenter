@@ -19,6 +19,8 @@ public class RedisJedisTimeoutCenterBootstrap implements SnowTimeoutCenter {
 
     private final RedisJedisTimeoutCenter[] timeoutCenters;
 
+    private volatile boolean isStarted = false;
+
     public RedisJedisTimeoutCenterBootstrap(JedisPool pool, String bizTag, int slotCount, DeadLetterHandleFactory deadLetterHandleFactory, HandleFactory handleFactory) {
         this.pool = pool;
         this.bizTag = bizTag;
@@ -35,6 +37,7 @@ public class RedisJedisTimeoutCenterBootstrap implements SnowTimeoutCenter {
             timeoutCenter.start();
             timeoutCenters[i] = timeoutCenter;
         }
+        isStarted = true;
     }
 
     @Override
@@ -42,21 +45,18 @@ public class RedisJedisTimeoutCenterBootstrap implements SnowTimeoutCenter {
         for (RedisJedisTimeoutCenter timeoutCenter : timeoutCenters) {
             Optional.ofNullable(timeoutCenter).ifPresent(AbstractSnowTimeoutCenter::shutdown);
         }
+        isStarted = false;
     }
 
     @Override
     public boolean publish(TimeoutTask timeoutTask) {
-        if (timeoutCenters == null) {
-            log.error("timeout center is null, bizTag={}, slotCount={}", bizTag, slotCount);
-            throw new IllegalStateException("timeout center is null");
+        if (!isStarted) {
+            log.error("timeout center is not started, bizTag={}, slotCount={}", bizTag, slotCount);
+            throw new IllegalStateException("timeout center is not started");
         }
         String ss = timeoutTask.getTaskFrom() + "##" + timeoutTask.getTaskFromId();
         int index = Math.abs(ss.hashCode() % slotCount);
         SnowTimeoutCenter cc = timeoutCenters[index];
-        if (cc == null) {
-            log.error("timeout center is null, bizTag={}, slotCount={}, index={}", bizTag, slotCount, index);
-            return false;
-        }
         return cc.publish(timeoutTask);
     }
 }
