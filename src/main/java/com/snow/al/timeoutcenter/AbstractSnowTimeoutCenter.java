@@ -3,7 +3,7 @@ package com.snow.al.timeoutcenter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class AbstractTimeoutCenterFacade implements SnowTimeoutCenter{
+public abstract class AbstractSnowTimeoutCenter implements SnowTimeoutCenter{
 
     private DeadLetterQueue deadLetterQueue;
     private HandleQueue handleQueue;
@@ -16,8 +16,7 @@ public abstract class AbstractTimeoutCenterFacade implements SnowTimeoutCenter{
         DeadLetterHandleFactory deadLetterHandleFactory = initSingletonDeadLetterHandleFactory();
         deadLetterQueue = initDeadLetterQueue(deadLetterHandleFactory);
         handleQueue = initHandleQueue(handleFactory, deadLetterQueue);
-        waitingQueue = initWaitingQueue(handleQueue);
-        handleQueue.setWaitingQueue(waitingQueue);
+        waitingQueue = initWaitingQueue(handleQueue, handleFactory);
 
         new Thread(() -> deadLetterQueue.start()).start();
         new Thread(() -> handleQueue.start()).start();
@@ -34,7 +33,7 @@ public abstract class AbstractTimeoutCenterFacade implements SnowTimeoutCenter{
 
     protected abstract HandleQueue initHandleQueue(HandleFactory handleFactory, DeadLetterQueue deadLetterQueue);
 
-    protected abstract WaitingQueue initWaitingQueue(HandleQueue handleQueue);
+    protected abstract WaitingQueue initWaitingQueue(HandleQueue handleQueue, HandleFactory handleFactory);
 
     protected abstract DeadLetterHandleFactory initSingletonDeadLetterHandleFactory();
 

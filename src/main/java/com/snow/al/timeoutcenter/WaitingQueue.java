@@ -24,19 +24,12 @@ public abstract class WaitingQueue implements TimeoutQueue {
             if (!isStart) {
                 return;
             }
-            TimeoutTask timeoutTask = peek();
-            if (timeoutTask == null) {
-                continue;
-            }
-            if (TimeLongUtil.currentTimeMillis() >= timeoutTask.getTaskTimeout()) {
-                moveTaskFromWaitingQueueToHandleQueue(timeoutTask);
-            }
+            startCore();
         }
     }
 
-    protected boolean moveTaskFromWaitingQueueToHandleQueue(TimeoutTask timeoutTask) {
-        return handleQueue.add(poll());
-    }
+    protected abstract void startCore();
+
 
     @Override
     public void shutdown() {

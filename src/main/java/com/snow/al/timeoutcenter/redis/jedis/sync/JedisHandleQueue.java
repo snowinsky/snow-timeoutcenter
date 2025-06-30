@@ -1,30 +1,30 @@
 package com.snow.al.timeoutcenter.redis.jedis.sync;
 
-import com.snow.al.timeoutcenter.DeadLetterQueue;
-import com.snow.al.timeoutcenter.HandleFactory;
 import com.snow.al.timeoutcenter.HandleQueue;
 import com.snow.al.timeoutcenter.TimeoutTask;
+import com.snow.al.timeoutcenter.WaitingQueue;
+import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.resps.Tuple;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static com.snow.al.timeoutcenter.TimeoutTask.calKey;
 
+@Slf4j
 public class JedisHandleQueue extends HandleQueue {
 
     private final JedisPool pool;
     private final String bizTag;
     private final int slotNumber;
+    private final String zsetKey;
 
 
-    public JedisHandleQueue(HandleFactory handleFactory, DeadLetterQueue deadLetterQueue, JedisPool pool, String bizTag, int slotNumber) {
-        super(handleFactory, deadLetterQueue);
+    public JedisHandleQueue(JedisPool pool, String bizTag, int slotNumber) {
         this.pool = pool;
         this.bizTag = bizTag;
         this.slotNumber = slotNumber;
+        this.zsetKey = calKey(QUEUE_TYPE, bizTag, slotNumber);
     }
 
     @Override
@@ -35,27 +35,26 @@ public class JedisHandleQueue extends HandleQueue {
     @Override
     public boolean add(TimeoutTask timeoutTask) {
         try (Jedis jedis = pool.getResource()) {
-            long ret = jedis.zadd(TimeoutTask.calKey(QUEUE_TYPE, bizTag, slotNumber), timeoutTask.calScore(), timeoutTask.calValue());
+            long ret = jedis.zadd(zsetKey, timeoutTask.calScore(), timeoutTask.calValue());
             return ret > 0;
         }
     }
 
     @Override
-    public TimeoutTask peek() {
+    public boolean del(TimeoutTask timeoutTask) {
         try (Jedis jedis = pool.getResource()) {
-            List<Tuple> t = jedis.zrangeWithScores(calKey(QUEUE_TYPE, bizTag, slotNumber), 0, 0);
-            if (t == null || t.isEmpty()) {
-                return null;
-            }
-            return t.stream().findFirst().map(TimeoutTask::new).orElse(null);
+            long ret = jedis.zrem(zsetKey, timeoutTask.calValue());
+            return ret > 0;
         }
     }
 
+
     @Override
-    public TimeoutTask poll() {
-        try (Jedis jedis = pool.getResource()) {
-            Tuple t = jedis.zpopmin(calKey(QUEUE_TYPE, bizTag, slotNumber));
-            return Optional.ofNullable(t).map(TimeoutTask::new).orElse(null);
-        }
+    protected void startCore() {
+        Long cnt = JedisClient.moveTimeoutMembersFrom2To(pool,
+                calKey(HandleQueue.QUEUE_TYPE, bizTag, slotNumber),
+                calKey(WaitingQueue.QUEUE_TYPE, bizTag, slotNumber),
+                30, TimeUnit.SECONDS);
+        log.warn("handle queue with zsetKey={} found {} timeout record move back to waiting queue", zsetKey, cnt);
     }
 }

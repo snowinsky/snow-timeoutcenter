@@ -35,6 +35,8 @@ public abstract class DeadLetterQueue implements TimeoutQueue {
         }
     }
 
+    protected abstract TimeoutTask poll();
+
     @Override
     public void shutdown() {
         isStart = false;

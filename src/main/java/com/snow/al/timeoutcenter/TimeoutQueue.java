@@ -8,9 +8,7 @@ public interface TimeoutQueue {
 
     boolean add(TimeoutTask timeoutTask);
 
-    TimeoutTask peek();
-
-    TimeoutTask poll();
+    boolean del(TimeoutTask timeoutTask);
 
     void start();
 

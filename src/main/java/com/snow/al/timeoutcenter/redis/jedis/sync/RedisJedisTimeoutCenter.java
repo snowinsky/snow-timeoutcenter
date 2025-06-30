@@ -7,11 +7,13 @@ import redis.clients.jedis.JedisPool;
 
 @Slf4j
 @RequiredArgsConstructor
-public class RedisJedisTimeoutCenter extends AbstractTimeoutCenterFacade {
+public class RedisJedisTimeoutCenter extends AbstractSnowTimeoutCenter {
 
     private final JedisPool pool;
     private final String bizTag;
     private final int slotNumber;
+    private final DeadLetterHandleFactory deadLetterHandleFactory;
+    private final HandleFactory handleFactory;
 
     @Override
     protected DeadLetterQueue initDeadLetterQueue(DeadLetterHandleFactory deadLetterHandleFactory) {
@@ -20,25 +22,22 @@ public class RedisJedisTimeoutCenter extends AbstractTimeoutCenterFacade {
 
     @Override
     protected HandleQueue initHandleQueue(HandleFactory handleFactory, DeadLetterQueue deadLetterQueue) {
-        return new JedisHandleQueue(handleFactory, deadLetterQueue, pool, bizTag, slotNumber);
+        return new JedisHandleQueue(pool, bizTag, slotNumber);
     }
 
     @Override
-    protected WaitingQueue initWaitingQueue(HandleQueue handleQueue) {
-        return new JedisWaitingQueue(handleQueue, pool, bizTag, slotNumber);
+    protected WaitingQueue initWaitingQueue(HandleQueue handleQueue, HandleFactory handleFactory) {
+        return new JedisWaitingQueue(handleQueue, pool, bizTag, slotNumber, handleFactory);
     }
 
     @Override
     protected DeadLetterHandleFactory initSingletonDeadLetterHandleFactory() {
-        return timeoutTask -> log.info("jedis process the task:{}", timeoutTask);
+        return deadLetterHandleFactory;
     }
 
     @Override
     protected HandleFactory initSingletonHandleFactory() {
-        return timeoutTask -> {
-            log.info("jedis receive the task:{}", timeoutTask);
-            return true;
-        };
+        return handleFactory;
     }
 
 }

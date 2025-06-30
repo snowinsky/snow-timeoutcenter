@@ -7,22 +7,21 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.resps.Tuple;
 
-import java.util.List;
 import java.util.Optional;
-
-import static com.snow.al.timeoutcenter.TimeoutTask.calKey;
 
 public class JedisDeadLetterQueue extends DeadLetterQueue {
 
     private final JedisPool pool;
     private final String bizTag;
     private final int slotNumber;
+    private final String zsetKey;
 
     public JedisDeadLetterQueue(DeadLetterHandleFactory deadLetterHandleFactory, JedisPool pool, String bizTag, int slotNumber) {
         super(deadLetterHandleFactory);
         this.pool = pool;
         this.bizTag = bizTag;
         this.slotNumber = slotNumber;
+        this.zsetKey = TimeoutTask.calKey(QUEUE_TYPE, bizTag, this.slotNumber);
     }
 
     @Override
@@ -33,27 +32,25 @@ public class JedisDeadLetterQueue extends DeadLetterQueue {
     @Override
     public boolean add(TimeoutTask timeoutTask) {
         try (Jedis jedis = pool.getResource()) {
-            long ret = jedis.zadd(TimeoutTask.calKey(QUEUE_TYPE, bizTag, slotNumber), timeoutTask.calScore(), timeoutTask.calValue());
+            long ret = jedis.zadd(zsetKey, timeoutTask.calScore(), timeoutTask.calValue());
             return ret > 0;
         }
     }
 
     @Override
-    public TimeoutTask peek() {
+    public boolean del(TimeoutTask timeoutTask) {
         try (Jedis jedis = pool.getResource()) {
-            List<Tuple> t = jedis.zrangeWithScores(calKey(QUEUE_TYPE, bizTag, slotNumber), 0, 0);
-            if (t == null || t.isEmpty()) {
-                return null;
-            }
-            return t.stream().findFirst().map(TimeoutTask::new).orElse(null);
+            long ret = jedis.zrem(zsetKey, timeoutTask.calValue());
+            return ret > 0;
         }
     }
 
+
     @Override
-    public TimeoutTask poll() {
+    protected TimeoutTask poll() {
         try (Jedis jedis = pool.getResource()) {
-            Tuple t = jedis.zpopmin(calKey(QUEUE_TYPE, bizTag, slotNumber));
-            return Optional.ofNullable(t).map(TimeoutTask::new).orElse(null);
+            Tuple tuple = jedis.zpopmin(zsetKey);
+            return Optional.ofNullable(tuple).map(TimeoutTask::new).orElse(null);
         }
     }
 }

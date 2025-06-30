@@ -25,7 +25,7 @@ public class TimeoutTask {
     }
 
     public static String calKey(String queueType, String bizTag, int slotNumber) {
-        return OTC + ":" + queueType.toUpperCase() + ":{" + bizTag + ":" + "SLOT" + slotNumber + "}";
+        return OTC + ":" + queueType.toUpperCase() + ":{" + bizTag + "+" + "SLOT" + slotNumber + "}";
     }
 
     public String calValue() {
