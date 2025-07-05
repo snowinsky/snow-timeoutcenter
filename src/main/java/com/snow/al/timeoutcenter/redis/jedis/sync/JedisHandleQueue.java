@@ -51,10 +51,9 @@ public class JedisHandleQueue extends HandleQueue {
 
     @Override
     protected void startCore() {
-        Long cnt = JedisClient.moveTimeoutMembersFrom2To(pool,
+        JedisClient.moveTimeoutMembersFrom2To(pool,
                 calKey(HandleQueue.QUEUE_TYPE, bizTag, slotNumber),
                 calKey(WaitingQueue.QUEUE_TYPE, bizTag, slotNumber),
                 30, TimeUnit.SECONDS);
-        log.warn("handle queue with zsetKey={} found {} timeout record move back to waiting queue", zsetKey, cnt);
     }
 }
